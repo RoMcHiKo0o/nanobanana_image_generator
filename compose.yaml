@@ -1,0 +1,8 @@
+services:
+  nanobanana_image_genenerator:
+    image: nanobanana_image_genenerator
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
