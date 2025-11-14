@@ -37,15 +37,23 @@ def generate_image_response(prompt: str, image_data: str):
     }
     try:
         resp = requests.post(url, json=payload)
-        if resp.ok:
+        if not resp.ok:
+            status = 'Error'
+            result = resp.json()
+        else:
             img_list = []
             for cand in resp.json()['candidates']:
                 for part in cand['content']['parts']:
                     if 'inlineData' in part:
                         img_list.append(base64_to_bytes(part['inlineData']['data']))
-            if len(img_list) == 1:
+            print(img_list)
+            if len(img_list) > 0:
                 result = img_list[0]
                 status = 'Success'
+            else:
+                result = 'image list is empty'
+                status = 'Error'
+
     except Exception as e:
         status = 'Error'
         result = str(e)
